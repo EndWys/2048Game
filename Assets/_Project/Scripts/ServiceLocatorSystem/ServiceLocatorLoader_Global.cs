@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Assets._Project.Scripts.ServiceLocatorSystem
 {
-    public class ServiceLocatorLoader_Global : MonoBehaviour
+    public class ServiceLocatorLoader_Global
     {
         private ServiceLocator _global;
 
