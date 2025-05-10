@@ -30,17 +30,17 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
             return Local;
         }
 
-        public T Register<T>(T service) where T : IService
+        public void Register<T>(T service) where T : IService
         {
             var key = typeof(T);
             if (_services.ContainsKey(key))
             {
-                return service;
+                return;
             }
 
             _services.Add(key, service);
 
-            return service;
+            return;
         }
 
         public void Unregister<T>() where T : IService

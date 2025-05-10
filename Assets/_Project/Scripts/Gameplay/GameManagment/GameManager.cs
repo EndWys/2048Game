@@ -7,7 +7,7 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment
     {
         private GameStateMachine _gameStateMachine;
 
-        public void Init()
+        public GameManager()
         {
             RegisterGameStates();
         }
@@ -20,6 +20,8 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment
             _gameStateMachine.Register(new CubeMovingGameState());
             _gameStateMachine.Register(new GameOverGameState());
         }
+
+        public void StartGame() => _gameStateMachine.SwitchState<CubeAimingGameState>();
 
         public void Tick()
         {

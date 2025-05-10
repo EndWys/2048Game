@@ -1,3 +1,4 @@
+using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.Gameplay.GameManagment;
 using Assets._Project.Scripts.Gameplay.GameplayInput;
 using UnityEngine;
@@ -6,6 +7,8 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
 {
     public class ServiceLocatorLoader_Game : MonoBehaviour
     {
+        [SerializeField] private CubeSpawner _cubeSpawner;
+
         private ServiceLocator _local;
 
         public void Load()
@@ -19,7 +22,11 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
         {
             _local.Register<IInputHandler>(new InputHandler());
 
-            _local.Register(new GameManager()).Init();
+            _local.Register<IActiveCubeProvider>(new ActiveCubeProvider());
+            _local.Register<ICubeSpawner>(_cubeSpawner);
+            _local.Register<ICubeAimController>(new CubeAimController());
+
+            _local.Register(new GameManager());
         }
 
         private void OnDestroy()

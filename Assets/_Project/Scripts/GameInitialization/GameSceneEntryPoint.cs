@@ -10,18 +10,22 @@ namespace Assets._Project.Scripts.GameInitialization
         [SerializeField] private ServiceLocatorLoader_Game _serviceLoader;
 
         private InputUpdater _inputUpdater;
+        private GameManager _gameManager;
         private void Start()
         {
             _serviceLoader.Load();
 
             _inputUpdater = new InputUpdater().Init();
+
+            _gameManager = ServiceLocator.Local.Get<GameManager>();
+            _gameManager.StartGame();
         }
 
         private void Update()
         {
             _inputUpdater.Update();
 
-            ServiceLocator.Local.Get<GameManager>().Tick();
+            _gameManager.Tick();
         }
     }
 }
