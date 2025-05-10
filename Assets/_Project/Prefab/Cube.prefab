@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6137524381116641713}
   - component: {fileID: 6421060790891364445}
+  - component: {fileID: 6008880750796790780}
+  - component: {fileID: -327222287643337290}
+  - component: {fileID: -3038305274526355335}
   - component: {fileID: 8825158756221011194}
   - component: {fileID: 3591202958583638631}
   - component: {fileID: 3795324752468587761}
@@ -48,8 +51,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d3e46c95bf0cd43bf46fb8068d83c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cubeMover: {fileID: 6008880750796790780}
+  _cubeSettleHandler: {fileID: -3038305274526355335}
+  _cubeMergeHandler: {fileID: -327222287643337290}
   _rigidBody: {fileID: 8825158756221011194}
-  _launchForce: 10
+--- !u!114 &6008880750796790780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6196732283087092583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11f095701ed982f45ba87751839fa22c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _launchForce: 25
+--- !u!114 &-327222287643337290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6196732283087092583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 523964298a9748a4ca6ea8177e2ce8c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mergeImpulseThreshold: 1.5
+--- !u!114 &-3038305274526355335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6196732283087092583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f8fea03b74ca314bb199334fb3c7311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &8825158756221011194
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -60,7 +103,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0.5
-  m_AngularDrag: 2
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

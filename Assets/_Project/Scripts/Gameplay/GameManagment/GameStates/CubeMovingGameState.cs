@@ -6,29 +6,38 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
     public class CubeMovingGameState : GameState
     {
         private IActiveCubeProvider _cubeProvider;
-        private MainCubeEventBus _eventBus;
+
+        private MainCubeEventBus<MainCubeSettledEvent> _settaledEvent;
+        private MainCubeEventBus<MainCubeMergedEvent> _mergeEvent;
 
         public override void Enter()
         {
             _cubeProvider = ServiceLocator.Local.Get<IActiveCubeProvider>();
-            _eventBus = ServiceLocator.Local.Get<MainCubeEventBus>();
 
-            _eventBus.OnEvent += OnCubeEvent;
+            _settaledEvent = ServiceLocator.Local.Get<MainCubeEventBus<MainCubeSettledEvent>>();
+            _mergeEvent = ServiceLocator.Local.Get<MainCubeEventBus<MainCubeMergedEvent>>();
+
+            _settaledEvent.OnEvent += OnSettaledEvent;
+            _mergeEvent.OnEvent += OnMergedEvent;
         }
 
         public override void Exit()
         {
-            _eventBus.OnEvent -= OnCubeEvent;
+            _settaledEvent.OnEvent -= OnSettaledEvent;
+            _mergeEvent.OnEvent -= OnMergedEvent;
 
             _cubeProvider.Clear();
         }
 
-        private void OnCubeEvent(IMainCubeEvent evnt)
+
+        private void OnSettaledEvent(MainCubeSettledEvent evnt)
         {
-            if (evnt is MainCubeMergedEvent || evnt is MainCubeSettled)
-            {
-                _stateSwitcher.SwitchState<CubeAimingGameState>();
-            }
+            _stateSwitcher.SwitchState<CubeAimingGameState>();
+        }
+
+        private void OnMergedEvent(MainCubeMergedEvent evnt)
+        {
+            _stateSwitcher.SwitchState<CubeAimingGameState>();
         }
     }
 }

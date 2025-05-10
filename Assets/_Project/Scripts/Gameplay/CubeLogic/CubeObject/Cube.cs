@@ -1,58 +1,39 @@
+using Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject.ÑubeComponents;
 using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.ServiceLocatorSystem;
+using System;
 using UnityEngine;
 
-public class Cube : MonoBehaviour
+namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject
 {
-    [SerializeField] private Rigidbody _rigidBody;
-    [SerializeField] private float _launchForce = 10f;
-
-    private bool _isSettled = false;
-    private bool _isLaunched = false;
-
-    private float _settleThreshold = 0.1f;
-    private float _settleTime = 0.2f;
-    private float _timer = 0f;
-
-    private MainCubeEventBus _eventBus;
-
-    public void Init()
+    public interface ICubeComparer
     {
-        _eventBus = ServiceLocator.Local.Get<MainCubeEventBus>();
+        bool IsMainCube();
     }
-
-    public void Launch()
+    public class Cube : MonoBehaviour, ICubeComparer
     {
-        _rigidBody.AddForce(Vector3.forward * _launchForce, ForceMode.Impulse);
-        _isLaunched = true;
-    }
+        [SerializeField] private CubeMover _cubeMover;
+        [SerializeField] private CubeSettleHandler _cubeSettleHandler;
+        [SerializeField] private CubeMergeHandler _cubeMergeHandler;
+        [SerializeField] private Rigidbody _rigidBody;
 
-    private void Update()
-    {
-        if (!_isLaunched) return;
+        private IActiveCubeProvider _activeCubeProvider;
 
-        if (_isSettled) return;
-
-        if (_rigidBody.velocity.magnitude < _settleThreshold)
+        public void Init()
         {
-            _timer += Time.deltaTime;
-            if (_timer >= _settleTime)
-            {
-                Debug.Log("IsSattled");
-                _isSettled = true;
-                _eventBus.Raise(new MainCubeSettled());
-            }
+            _activeCubeProvider = ServiceLocator.Local.Get<IActiveCubeProvider>();
+
+            _cubeMover.Init(_rigidBody);
+            _cubeSettleHandler.Init(_rigidBody, _cubeMover);
+            _cubeMergeHandler.Init(this, _rigidBody);
         }
-        else
+
+        public bool IsMainCube()
         {
-            _timer = 0f;
+            return _activeCubeProvider.ActiveCube.Equals(this);
         }
-    }
 
-    private void MergeWith(Cube otherCube)
-    {
-        // merge logic
-
-        _eventBus.Raise(new MainCubeMergedEvent());
+        public void Launch() => _cubeMover.Launch();
+        public void MergeLaunch(Vector3 velocity) => _cubeMover.MergeLaunch(velocity);
     }
 }

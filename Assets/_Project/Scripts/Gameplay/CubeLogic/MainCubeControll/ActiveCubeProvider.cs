@@ -1,3 +1,4 @@
+using Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject;
 using Assets._Project.Scripts.ServiceLocatorSystem;
 
 namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
