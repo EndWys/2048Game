@@ -1,11 +1,14 @@
 using Assets._Project.Scripts.ServiceLocatorSystem;
 using UnityEngine;
 
-public class GameSceneEntryPoint : MonoBehaviour
+namespace Assets._Project.Scripts.GameInitialization
 {
-    [SerializeField] private ServiceLocatorLoader_Game _serviceLoader;
-    private void Start()
+    public class GameSceneEntryPoint : MonoBehaviour
     {
-        _serviceLoader.Load();
+        [SerializeField] private ServiceLocatorLoader_Game _serviceLoader;
+        private void Start()
+        {
+            _serviceLoader.Load();
+        }
     }
 }
