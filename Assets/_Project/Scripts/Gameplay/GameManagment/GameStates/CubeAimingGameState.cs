@@ -16,6 +16,8 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
             _aimController = ServiceLocator.Local.Get<ICubeAimController>();
 
             var cube = _cubeSpawner.SpawnCube();
+            cube.Init();
+
             _cubeProvider.SetCube(cube);
 
             _aimController.Enable(OnCubeLaunch);
