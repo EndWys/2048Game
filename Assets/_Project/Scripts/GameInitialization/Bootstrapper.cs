@@ -1,15 +1,23 @@
+using Assets._Project.Scripts.ServiceLocatorSystem;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Bootstrapper : MonoBehaviour
+namespace Assets._Project.Scripts.GameInitialization
 {
-    private static string GameSceneName = "GameScene";
-
-    private void Start()
+    public class Bootstrapper : MonoBehaviour
     {
-        Application.runInBackground = true;
+        private const string GAME_SCENE_NAME = "GameScene";
 
-        if (SceneManager.loadedSceneCount == 1)
-            SceneManager.LoadScene(GameSceneName, LoadSceneMode.Additive);
+        private ServiceLocatorLoader_Global _serviceLoader = new();
+
+        private void Start()
+        {
+            Application.runInBackground = true;
+
+            _serviceLoader.Load();
+
+            if (SceneManager.loadedSceneCount == 1)
+                SceneManager.LoadScene(GAME_SCENE_NAME, LoadSceneMode.Additive);
+        }
     }
 }
