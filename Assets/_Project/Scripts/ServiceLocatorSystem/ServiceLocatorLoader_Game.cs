@@ -1,12 +1,11 @@
 using Assets._Project.Scripts.Gameplay.GameManagment;
+using Assets._Project.Scripts.Gameplay.GameplayInput;
 using UnityEngine;
 
 namespace Assets._Project.Scripts.ServiceLocatorSystem
 {
     public class ServiceLocatorLoader_Game : MonoBehaviour
     {
-        [SerializeField] GameManager _gameManager;
-
         private ServiceLocator _local;
 
         public void Load()
@@ -18,7 +17,9 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
 
         private void RegisterAllServices()
         {
-            _local.Register(_gameManager).Init();
+            _local.Register<IInputHandler>(new InputHandler());
+
+            _local.Register(new GameManager()).Init();
         }
 
         private void OnDestroy()
@@ -28,7 +29,11 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
 
         private void UnregisterAllServices()
         {
+            if (_local == null)
+                return;
 
+            _local.Unregister<IInputHandler>();
+            _local.Unregister<GameManager>();
         }
     }
 }

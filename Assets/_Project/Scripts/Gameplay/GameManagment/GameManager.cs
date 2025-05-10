@@ -20,5 +20,10 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment
             _gameStateMachine.Register(new CubeMovingGameState());
             _gameStateMachine.Register(new GameOverGameState());
         }
+
+        public void Tick()
+        {
+            _gameStateMachine.Tick();
+        }
     }
 }
