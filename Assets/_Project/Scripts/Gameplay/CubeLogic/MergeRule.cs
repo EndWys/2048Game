@@ -12,11 +12,18 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic
     public class MergeRule : IMergeRule
     {
         private ICubeSpawner _spawner;
+        private IGameScore _gameScore;
+
         private MainCubeEventBus<MainCubeMergedEvent> _mergeEvent;
+
+        private int _devideScoreBy = 2;
+        private int _newValueMultiplier = 2;
 
         public MergeRule()
         {
             _spawner = ServiceLocator.Local.Get<ICubeSpawner>();
+            _gameScore = ServiceLocator.Local.Get<IGameScore>();
+
             _mergeEvent = ServiceLocator.Local.Get<MainCubeEventBus<MainCubeMergedEvent>>();
         }
 
@@ -24,21 +31,27 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic
         {
             if(firstCube.CanMergeWith(secondCube))
             {
-                int newValue = firstCube.ValueHolder.Value * 2;
+                int parentCubeValue = firstCube.ValueHolder.Value;
+
+                _gameScore.AddScore(parentCubeValue / _devideScoreBy);
+
+                int newValue = parentCubeValue * _newValueMultiplier;
 
                 firstCube.MakeMerged();
                 secondCube.MakeMerged();
 
-                Vector3 spawnPos = (firstCube.transform.position + secondCube.transform.position) / 2f;
+                firstCube.Deactivate();
+                secondCube.Deactivate();
 
-                _spawner.DespawnCube(firstCube);
-                _spawner.DespawnCube(secondCube);
+                Vector3 spawnPos = (firstCube.transform.position + secondCube.transform.position) / 2f;
 
                 Cube newCube = _spawner.SpawnCubeOnPosition(spawnPos);
 
-                newCube.Init();
                 newCube.MergeLaunch(firstCube);
                 newCube.ValueHolder.SetValue(newValue);
+
+                _spawner.DespawnCube(firstCube);
+                _spawner.DespawnCube(secondCube);
 
                 if (firstCube.IsMainCube() || secondCube.IsMainCube())
                 {

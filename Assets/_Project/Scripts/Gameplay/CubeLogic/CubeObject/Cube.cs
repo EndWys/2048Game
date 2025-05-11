@@ -1,7 +1,7 @@
 using Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject.ÑubeComponents;
 using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
+using Assets._Project.Scripts.ObjectPoolSytem;
 using Assets._Project.Scripts.ServiceLocatorSystem;
-using System;
 using UnityEngine;
 
 namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject
@@ -15,7 +15,7 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject
     {
         bool CanMergeWith(Cube cube);
     }
-    public class Cube : MonoBehaviour, ICubeComparer
+    public class Cube : PoolObject, ICubeComparer
     {
         [SerializeField] private Rigidbody _rigidBody;
 
@@ -36,33 +36,54 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject
         {
             _activeCubeProvider = ServiceLocator.Local.Get<IActiveCubeProvider>();
             _mergeRule = ServiceLocator.Local.Get<IMergeRule>();
-
-            _cubeValue = new CubeValue(_cubeView);
-            _cubeMergeHandler = new CubeMergeHandler();
-
-            _cubeMover.Init(_rigidBody);
-            _cubeSettleHandler.Init(_rigidBody, _cubeMover);
-
-            _cubeCollisionHandler.OnCubeCollide += OnCubeCollide;
         }
+
+        public void SetPosition(Vector3 position) => _rigidBody.position = position;
+        public void SetRotation(Quaternion rotation) => _rigidBody.rotation = rotation;
 
         public void Launch() => _cubeMover.Launch();
         public void MergeLaunch(Cube parent) => _cubeMover.MergeLaunch(parent._rigidBody.velocity);
 
-        public void MakeMerged() => _cubeMergeHandler.MakeMerged();
+        public void Deactivate() => CachedGameObject.SetActive(false);
+
+        public void MakeMerged() =>_cubeMergeHandler.MakeMerged();
         public bool IsMerged() => _cubeMergeHandler.IsMerged();
         public bool CanMergeWith(Cube cube) => _cubeMergeHandler.CanMergeWith(cube) && _cubeValue.HasSameValue(cube._cubeValue);
 
         public bool IsMainCube() => _activeCubeProvider.ActiveCube.Equals(this);
 
+        public override void OnGetFromPool()
+        {
+            ReInit();
+
+            CachedGameObject.SetActive(true);
+            _rigidBody.isKinematic = false;
+
+            _cubeCollisionHandler.OnCubeCollide += OnCubeCollide;
+        }
+
+        public override void OnReleaseToPool()
+        {
+            _cubeCollisionHandler.OnCubeCollide -= OnCubeCollide;
+
+            _rigidBody.velocity = Vector3.zero;
+            _rigidBody.isKinematic = true;
+
+            CachedGameObject.SetActive(false);
+        }
+
+        private void ReInit()
+        {
+            _cubeValue = new CubeValue(_cubeView);
+            _cubeMergeHandler = new CubeMergeHandler();
+
+            _cubeMover.Init(_rigidBody);
+            _cubeSettleHandler.Init(_rigidBody, _cubeMover);
+        }
+
         private void OnCubeCollide(Cube otherCube)
         {
             _mergeRule.TryMergeTwoCubes(this, otherCube);
-        }
-
-        private void OnDestroy()
-        {
-            _cubeCollisionHandler.OnCubeCollide -= OnCubeCollide;
         }
     }
 }

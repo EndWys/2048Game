@@ -18,7 +18,7 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
 
         private Action _onLaunch;
         private Vector2 _startTouchPosition;
-        private float _moveLimit = 2.5f;
+        private float _moveLimit = 1.95f;
         private float _sensitivity = 0.01f;
 
         public CubeAimController()
