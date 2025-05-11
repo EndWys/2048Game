@@ -2,6 +2,7 @@ using Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject;
 using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.ServiceLocatorSystem;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Assets._Project.Scripts.Gameplay.CubeLogic
 {
@@ -12,11 +13,15 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic
     public class MergeRule : IMergeRule
     {
         private ICubeSpawner _spawner;
+        private IGameScore _gameScore;
+
         private MainCubeEventBus<MainCubeMergedEvent> _mergeEvent;
 
         public MergeRule()
         {
             _spawner = ServiceLocator.Local.Get<ICubeSpawner>();
+            _gameScore = ServiceLocator.Local.Get<IGameScore>();
+
             _mergeEvent = ServiceLocator.Local.Get<MainCubeEventBus<MainCubeMergedEvent>>();
         }
 
@@ -24,7 +29,11 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic
         {
             if(firstCube.CanMergeWith(secondCube))
             {
-                int newValue = firstCube.ValueHolder.Value * 2;
+                int parentCubeValue = firstCube.ValueHolder.Value;
+
+                _gameScore.AddScore(parentCubeValue / 2);
+
+                int newValue = parentCubeValue * 2;
 
                 firstCube.MakeMerged();
                 secondCube.MakeMerged();

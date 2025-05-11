@@ -26,6 +26,8 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
             _local.Register(new MainCubeEventBus<MainCubeSettledEvent>());
             _local.Register(new MainCubeEventBus<MainCubeMergedEvent>());
 
+            _local.Register<IGameScore>(new GameScore());
+
             _local.Register<IActiveCubeProvider>(new ActiveCubeProvider());
             _local.Register<ICubeSpawner>(_cubeSpawner);
             _local.Register<ICubeAimController>(new CubeAimController());
