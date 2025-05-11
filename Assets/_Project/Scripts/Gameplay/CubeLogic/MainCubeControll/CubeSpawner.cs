@@ -8,6 +8,7 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
     {
         Cube SpawnCube();
         Cube SpawnCubeOnPosition(Vector3 position);
+        void DespawnCube(Cube cube);
     }
 
     public class CubeSpawner : MonoBehaviour, ICubeSpawner
@@ -25,6 +26,11 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
         {
             var cube = Instantiate(_cubePrefab, position, Quaternion.identity);
             return cube;
+        }
+
+        public void DespawnCube(Cube cube)
+        {
+            Destroy(cube.gameObject);
         }
     }
 }

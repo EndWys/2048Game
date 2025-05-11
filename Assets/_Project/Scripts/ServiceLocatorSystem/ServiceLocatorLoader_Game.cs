@@ -1,3 +1,4 @@
+using Assets._Project.Scripts.Gameplay.CubeLogic;
 using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.Gameplay.GameManagment;
 using Assets._Project.Scripts.Gameplay.GameplayInput;
@@ -28,6 +29,8 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
             _local.Register<IActiveCubeProvider>(new ActiveCubeProvider());
             _local.Register<ICubeSpawner>(_cubeSpawner);
             _local.Register<ICubeAimController>(new CubeAimController());
+
+            _local.Register<IMergeRule>(new MergeRule());
 
             _local.Register(new GameManager());
         }
