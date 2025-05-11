@@ -2,26 +2,29 @@ using Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject;
 using Assets._Project.Scripts.ObjectPoolSytem;
 using UnityEngine;
 
-public class CubePool : GenericObjectPool<Cube>
+namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubePoolSystem
 {
-    [SerializeField] private Transform _parent;
-    [SerializeField] private Transform _defaultSpawnPoint;
-
-    [SerializeField] private Cube _cubePrefab;
-
-    protected override bool _collectionCheck => false;
-    protected override int _defaultCapacity => 30;
-
-    protected override Cube CratePoolObject()
+    public class CubePool : GenericObjectPool<Cube>
     {
-        var cube = Instantiate(_cubePrefab, _defaultSpawnPoint.position, Quaternion.identity, _parent);
-        cube.Init();
-        return cube;
-    }
+        [SerializeField] private Transform _parent;
+        [SerializeField] private Transform _defaultSpawnPoint;
 
-    protected override void OnGetObjectFromPool(Cube poolObject)
-    {
-        poolObject.CachedTrasform.position = _defaultSpawnPoint.position;
-        base.OnGetObjectFromPool(poolObject);
+        [SerializeField] private Cube _cubePrefab;
+
+        protected override bool _collectionCheck => false;
+        protected override int _defaultCapacity => 30;
+
+        protected override Cube CratePoolObject()
+        {
+            var cube = Instantiate(_cubePrefab, _defaultSpawnPoint.position, Quaternion.identity, _parent);
+            cube.Init();
+            return cube;
+        }
+
+        protected override void OnGetObjectFromPool(Cube poolObject)
+        {
+            poolObject.CachedTrasform.position = _defaultSpawnPoint.position;
+            base.OnGetObjectFromPool(poolObject);
+        }
     }
 }

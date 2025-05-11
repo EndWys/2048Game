@@ -24,8 +24,5 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject.ÑubeComponents
 
             return true;
         }
-
-
-
     }
 }

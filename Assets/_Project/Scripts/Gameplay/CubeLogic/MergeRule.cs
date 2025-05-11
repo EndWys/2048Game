@@ -16,6 +16,9 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic
 
         private MainCubeEventBus<MainCubeMergedEvent> _mergeEvent;
 
+        private int _devideScoreBy = 2;
+        private int _newValueMultiplier = 2;
+
         public MergeRule()
         {
             _spawner = ServiceLocator.Local.Get<ICubeSpawner>();
@@ -30,9 +33,9 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic
             {
                 int parentCubeValue = firstCube.ValueHolder.Value;
 
-                _gameScore.AddScore(parentCubeValue / 2);
+                _gameScore.AddScore(parentCubeValue / _devideScoreBy);
 
-                int newValue = parentCubeValue * 2;
+                int newValue = parentCubeValue * _newValueMultiplier;
 
                 firstCube.MakeMerged();
                 secondCube.MakeMerged();

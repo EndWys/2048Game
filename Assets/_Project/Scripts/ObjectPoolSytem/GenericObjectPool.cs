@@ -3,11 +3,6 @@ using UnityEngine.Pool;
 
 namespace Assets._Project.Scripts.ObjectPoolSytem
 {
-    public interface IParentPool<TObject> where TObject : PoolObject
-    {
-        public void Release(TObject poolObject);
-    }
-
     public abstract class GenericObjectPool<TObject> : MonoBehaviour where TObject : PoolObject
     {
         protected ObjectPool<TObject> _pool;
