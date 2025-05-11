@@ -2,7 +2,6 @@ using Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject;
 using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.ServiceLocatorSystem;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace Assets._Project.Scripts.Gameplay.CubeLogic
 {
@@ -38,16 +37,18 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic
                 firstCube.MakeMerged();
                 secondCube.MakeMerged();
 
-                Vector3 spawnPos = (firstCube.transform.position + secondCube.transform.position) / 2f;
+                firstCube.Deactivate();
+                secondCube.Deactivate();
 
-                _spawner.DespawnCube(firstCube);
-                _spawner.DespawnCube(secondCube);
+                Vector3 spawnPos = (firstCube.transform.position + secondCube.transform.position) / 2f;
 
                 Cube newCube = _spawner.SpawnCubeOnPosition(spawnPos);
 
-                newCube.Init();
                 newCube.MergeLaunch(firstCube);
                 newCube.ValueHolder.SetValue(newValue);
+
+                _spawner.DespawnCube(firstCube);
+                _spawner.DespawnCube(secondCube);
 
                 if (firstCube.IsMainCube() || secondCube.IsMainCube())
                 {

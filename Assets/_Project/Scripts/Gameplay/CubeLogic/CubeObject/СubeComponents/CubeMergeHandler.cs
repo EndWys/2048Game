@@ -2,7 +2,7 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject.ÑubeComponents
 {
     public class CubeMergeHandler
     {
-        private bool _merged;
+        private bool _merged = false;
 
         public void MakeMerged()
         {

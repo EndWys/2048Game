@@ -18,6 +18,9 @@ public class CubeSettleHandler : MonoBehaviour
 
     public void Init(Rigidbody rigidbody, ILaunching launching)
     {
+        _isSettled = false;
+        _timer = 0f;
+
         _rigidBody = rigidbody;
         _launching = launching;
 

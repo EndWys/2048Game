@@ -2,6 +2,7 @@ using Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject;
 using Assets._Project.Scripts.Gameplay.GameManagment;
 using Assets._Project.Scripts.ServiceLocatorSystem;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
 {
@@ -16,8 +17,10 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
 
     public class CubeSpawner : MonoBehaviour, ICubeSpawner
     {
+        private const string MAIN_CUBE_LAYER = "MainCube";
+
         [SerializeField] private Transform _mainCubeSpawnPoint;
-        [SerializeField] private Cube _cubePrefab;
+        [SerializeField] private CubePool _cubePool;
 
         private IOnFieldCubeRegister _cubeRegistry;
 
@@ -25,35 +28,39 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
 
         public void Init()
         {
-            _cubeRegistry = ServiceLocator.Local.Get<OnFieldCubeRegistry>();
-
             GameplaySettings settings = ServiceLocator.Local.Get<GameplaySettings>();
             _spawnConfig = settings.CubeValueSpawnConfig;
+
+            _cubeRegistry = ServiceLocator.Local.Get<OnFieldCubeRegistry>();
+
+            _cubePool.CreatePool();
         }
 
         public Cube SpawnMainCube()
         {
-            Cube cube = Instantiate(_cubePrefab, _mainCubeSpawnPoint.position, Quaternion.identity);
-            cube.Init();
             int randomValue = _spawnConfig.GetRandomValue();
-            cube.ValueHolder.SetValue(randomValue);
+
+            Cube cube = _cubePool.GetObject();
 
             _cubeRegistry.Register(cube);
+
+            cube.SetPosition(_mainCubeSpawnPoint.position);
+            cube.SetRotation(Quaternion.identity);
+            cube.CachedGameObject.layer = LayerMask.NameToLayer(MAIN_CUBE_LAYER);
+            cube.ValueHolder.SetValue(randomValue);
 
             return cube;
         }
 
         public Cube SpawnCubeOnPosition(Vector3 position)
         {
-            var cube = Instantiate(_cubePrefab, position, Quaternion.identity);
-            _cubeRegistry.Register(cube);
-            return cube;
-        }
+            Cube cube = _cubePool.GetObject();
 
-        public void DespawnCube(Cube cube)
-        {
-            _cubeRegistry.Unregister(cube);
-            Destroy(cube.gameObject);
+            _cubeRegistry.Register(cube);
+
+            cube.SetPosition(position);
+
+            return cube;
         }
 
         public void DespawnAllCubes()
@@ -64,6 +71,12 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
             {
                 DespawnCube(cube);
             }
+        }
+
+        public void DespawnCube(Cube cube)
+        {
+            _cubeRegistry.Unregister(cube);
+            _cubePool.ReleaseObject(cube);
         }
     }
 }

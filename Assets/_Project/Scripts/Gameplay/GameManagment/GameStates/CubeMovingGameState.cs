@@ -1,5 +1,6 @@
 using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.ServiceLocatorSystem;
+using UnityEngine;
 
 namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
 {

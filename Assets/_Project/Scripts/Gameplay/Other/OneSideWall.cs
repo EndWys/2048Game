@@ -1,7 +1,7 @@
 using Assets._Project.Scripts.Extensions;
 using UnityEngine;
 
-public class OnSideWall : MonoBehaviour
+public class OneSideWall : MonoBehaviour
 {
     [SerializeField] private LayerMask _mainCubeLayer;
     private void OnTriggerExit(Collider other)
