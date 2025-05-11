@@ -1314,9 +1314,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69633251304076d41a670cabef4b05f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnPoint: {fileID: 561869714}
+  _mainCubeSpawnPoint: {fileID: 561869714}
   _cubePrefab: {fileID: 6421060790891364445, guid: db7914d8f6c6c974ba4da86c0fd59b05,
     type: 3}
+  _spawnConfig: {fileID: 11400000, guid: cfcac03893dbc224cbf6963cb6a392f7, type: 2}
 --- !u!1 &1321711028
 GameObject:
   m_ObjectHideFlags: 0

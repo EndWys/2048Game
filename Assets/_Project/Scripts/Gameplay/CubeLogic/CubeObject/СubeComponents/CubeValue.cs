@@ -17,8 +17,6 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject.ÑubeComponents
         public CubeValue(CubeView cubeView)
         {
             _view = cubeView;
-
-            _view.UpdateView(_value);
         }
 
         public void SetValue(int newValue)

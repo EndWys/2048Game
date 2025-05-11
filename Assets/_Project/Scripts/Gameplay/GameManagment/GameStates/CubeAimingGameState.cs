@@ -1,3 +1,4 @@
+using Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject;
 using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.ServiceLocatorSystem;
 
@@ -15,8 +16,7 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
             _cubeProvider = ServiceLocator.Local.Get<IActiveCubeProvider>();
             _aimController = ServiceLocator.Local.Get<ICubeAimController>();
 
-            var cube = _cubeSpawner.SpawnCube();
-            cube.Init();
+            Cube cube = _cubeSpawner.SpawnMainCube();
 
             _cubeProvider.SetCube(cube);
 

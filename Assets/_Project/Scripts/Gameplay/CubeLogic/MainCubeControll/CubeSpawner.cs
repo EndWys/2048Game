@@ -6,19 +6,23 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
 {
     public interface ICubeSpawner : IService
     {
-        Cube SpawnCube();
+        Cube SpawnMainCube();
         Cube SpawnCubeOnPosition(Vector3 position);
         void DespawnCube(Cube cube);
     }
 
     public class CubeSpawner : MonoBehaviour, ICubeSpawner
     {
-        [SerializeField] private Transform _spawnPoint;
+        [SerializeField] private Transform _mainCubeSpawnPoint;
         [SerializeField] private Cube _cubePrefab;
+        [SerializeField] private CubeValueSpawnConfig _spawnConfig;
 
-        public Cube SpawnCube()
+        public Cube SpawnMainCube()
         {
-            var cube = Instantiate(_cubePrefab, _spawnPoint.position, Quaternion.identity);
+            Cube cube = Instantiate(_cubePrefab, _mainCubeSpawnPoint.position, Quaternion.identity);
+            cube.Init();
+            int randomValue = _spawnConfig.GetRandomValue();
+            cube.ValueHolder.SetValue(randomValue);
             return cube;
         }
 
