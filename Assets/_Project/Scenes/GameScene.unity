@@ -303,6 +303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91e1064d040e7f244ac25c061181d24a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameplaySettings: {fileID: 11400000, guid: 8e811efc26ed2a240883c5dc145014f1, type: 2}
   _cubeSpawner: {fileID: 1316624919}
 --- !u!1 &212377115
 GameObject:

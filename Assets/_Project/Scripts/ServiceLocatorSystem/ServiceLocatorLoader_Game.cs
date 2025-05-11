@@ -8,6 +8,7 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
 {
     public class ServiceLocatorLoader_Game : MonoBehaviour
     {
+        [SerializeField] private GameplaySettings _gameplaySettings;
         [SerializeField] private CubeSpawner _cubeSpawner;
 
         private ServiceLocator _local;
@@ -21,6 +22,8 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
 
         private void RegisterAllServices()
         {
+            _local.Register(_gameplaySettings);
+
             _local.Register<IInputHandler>(new InputHandler());
 
             _local.Register(new MainCubeEventBus<MainCubeSettledEvent>());
@@ -28,8 +31,14 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
 
             _local.Register<IGameScore>(new GameScore());
 
+            _local.Register(new OnFieldCubeRegistry());
+            _local.Register<IGameOverChecker>(new GameOverChecker());
+
             _local.Register<IActiveCubeProvider>(new ActiveCubeProvider());
+
+            _cubeSpawner.Init();
             _local.Register<ICubeSpawner>(_cubeSpawner);
+
             _local.Register<ICubeAimController>(new CubeAimController());
 
             _local.Register<IMergeRule>(new MergeRule());
