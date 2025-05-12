@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4eee2397ea342047ac087dbc72a1f68, type: 3}
+  m_Name: SoundLibrary
+  m_EditorClassIdentifier: 
+  <CubeSpawnClip>k__BackingField: {fileID: 8300000, guid: 1cf6d9f0dbf224942a2174363b951930,
+    type: 3}
+  <CubeMergeClip>k__BackingField: {fileID: 8300000, guid: fc3955004dbf4d34a86f9a1ed8446bea,
+    type: 3}
+  <CubeLaunchClip>k__BackingField: {fileID: 8300000, guid: ca0eca0327d64054a871a887634dbfba,
+    type: 3}
+  <GameOverClip>k__BackingField: {fileID: 8300000, guid: 940a5e822e8713a4d8f08561bbacbba9,
+    type: 3}

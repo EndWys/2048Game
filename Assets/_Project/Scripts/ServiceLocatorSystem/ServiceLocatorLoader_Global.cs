@@ -1,3 +1,4 @@
+using Assets._Project.Scripts.Effects;
 using UnityEngine;
 
 namespace Assets._Project.Scripts.ServiceLocatorSystem
@@ -15,7 +16,8 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
 
         private void RegisterAllServices()
         {
-
+            _global.Register(new SoundManager());
+            _global.Register(new VFXManager());
         }
     }
 }

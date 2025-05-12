@@ -57,7 +57,7 @@ namespace Assets._Project.Scripts.UI
             CachedGameObject.SetActive(true);
             _canvasGroup.alpha = 0f;
 
-            await _canvasGroup.DOFade(1f, _textPunchScaleDuration).SetEase(Ease.OutQuad).WithCancellation(_cancellationToken);
+            await _canvasGroup.DOFade(1f, _panelFadeDuration).SetEase(Ease.OutQuad).WithCancellation(_cancellationToken);
         }
 
         public override async UniTask Hide()
@@ -71,7 +71,7 @@ namespace Assets._Project.Scripts.UI
             _gameScore.OnScoreChange -= UpdateScore;
             _cubeCounter.OnCountChange -= UpdateCubeCount;
 
-            await _canvasGroup.DOFade(0f, _textPunchScaleDuration).SetEase(Ease.InQuad).WithCancellation(_cancellationToken);
+            await _canvasGroup.DOFade(0f, _panelFadeDuration).SetEase(Ease.InQuad).WithCancellation(_cancellationToken);
 
             CachedGameObject.SetActive(false);
         }

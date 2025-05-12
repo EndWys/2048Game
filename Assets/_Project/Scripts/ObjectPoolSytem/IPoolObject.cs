@@ -6,9 +6,4 @@ namespace Assets._Project.Scripts.ObjectPoolSytem
 
         public void OnReleaseToPool();
     }
-
-    public interface ISelfReleaseObject
-    {
-        public void SelfRelease();
-    }
 }

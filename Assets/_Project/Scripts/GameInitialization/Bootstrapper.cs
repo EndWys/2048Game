@@ -8,7 +8,7 @@ namespace Assets._Project.Scripts.GameInitialization
     {
         private const string GAME_SCENE_NAME = "GameScene";
 
-        private ServiceLocatorLoader_Global _serviceLoader = new();
+        private ServiceLocatorLoader_Global _serviceLoader = new ServiceLocatorLoader_Global();
 
         private void Start()
         {
