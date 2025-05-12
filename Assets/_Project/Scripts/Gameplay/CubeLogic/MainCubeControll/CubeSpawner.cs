@@ -46,13 +46,13 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
             int randomValue = _spawnConfig.GetRandomValue();
 
             Cube cube = _cubePool.GetObject();
-
-            _cubeRegistry.Register(cube);
-
             cube.SetPosition(_mainCubeSpawnPoint.position);
             cube.SetRotation(Quaternion.identity);
             cube.CachedGameObject.layer = LayerMask.NameToLayer(MAIN_CUBE_LAYER);
             cube.ValueHolder.SetValue(randomValue);
+            cube.Activate();
+
+            _cubeRegistry.Register(cube);
 
             _vfxManager.PlayCubeSpawnEffect(_mainCubeSpawnPoint.position);
 
@@ -62,10 +62,10 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
         public Cube SpawnCubeOnPosition(Vector3 position)
         {
             Cube cube = _cubePool.GetObject();
+            cube.SetPosition(position);
+            cube.Activate();
 
             _cubeRegistry.Register(cube);
-
-            cube.SetPosition(position);
 
             _vfxManager.PlayCubeSpawnEffect(position);
 

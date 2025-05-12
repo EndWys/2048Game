@@ -38,13 +38,21 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject
             _mergeRule = ServiceLocator.Local.Get<IMergeRule>();
         }
 
-        public void SetPosition(Vector3 position) => _rigidBody.position = position;
-        public void SetRotation(Quaternion rotation) => _rigidBody.rotation = rotation;
+        public void Activate()
+        {
+            CachedGameObject.SetActive(true);
+            _rigidBody.isKinematic = false;
+
+            _cubeCollisionHandler.OnCubeCollide += OnCubeCollide;
+        }
+
+        public void Deactivate() => CachedGameObject.SetActive(false);
+        public void SetPosition(Vector3 position) => CachedTrasform.position = position;
+        public void SetRotation(Quaternion rotation) => CachedTrasform.rotation = rotation;
 
         public void Launch() => _cubeMover.Launch();
         public void MergeLaunch(Cube parent) => _cubeMover.MergeLaunch(parent._rigidBody.velocity);
 
-        public void Deactivate() => CachedGameObject.SetActive(false);
 
         public void MakeMerged() =>_cubeMergeHandler.MakeMerged();
         public bool IsMerged() => _cubeMergeHandler.IsMerged();
@@ -55,11 +63,6 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject
         public override void OnGetFromPool()
         {
             ReInit();
-
-            CachedGameObject.SetActive(true);
-            _rigidBody.isKinematic = false;
-
-            _cubeCollisionHandler.OnCubeCollide += OnCubeCollide;
         }
 
         public override void OnReleaseToPool()
