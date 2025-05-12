@@ -11,6 +11,8 @@ namespace Assets._Project.Scripts.GameInitialization
 
         private InputUpdater _inputUpdater;
         private GameManager _gameManager;
+
+        private bool _initialized;
         private void Start()
         {
             _serviceLoader.Load();
@@ -19,6 +21,8 @@ namespace Assets._Project.Scripts.GameInitialization
 
             _gameManager = ServiceLocator.Local.Get<GameManager>();
             _gameManager.StartGame();
+
+            _initialized = true;
         }
 
         private void Update()
@@ -26,6 +30,12 @@ namespace Assets._Project.Scripts.GameInitialization
             _inputUpdater.Update();
 
             _gameManager.Tick();
+        }
+
+        private void OnDestroy()
+        {
+            if (_initialized)
+                _gameManager.ExitGame();
         }
     }
 }

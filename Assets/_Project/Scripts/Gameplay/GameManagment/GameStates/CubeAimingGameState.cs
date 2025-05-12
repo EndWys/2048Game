@@ -18,9 +18,7 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
             _gameOverChecker = ServiceLocator.Local.Get<IGameOverChecker>();
 
             if (_gameOverChecker.IsGameOver())
-            {
-                Debug.Log("Gameover!!!");
-                _cubeSpawner.DespawnAllCubes();
+            {                
                 _stateSwitcher.SwitchState<GameOverGameState>();
                 return;
             }

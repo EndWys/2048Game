@@ -1,31 +1,66 @@
-using Assets._Project.Scripts.Gameplay.GameplayInput;
+using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.ServiceLocatorSystem;
-using UnityEngine;
+using Assets._Project.Scripts.UI;
+using System.Threading;
 
 namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
 {
     public class GameOverGameState : GameState
     {
-        private IInputHandler _input;
-
         private IGameScore _gameScore;
+        private ICubeSpawner _cubeSpawner;
 
-        public override void Enter()
+        private IGameOverdUI _gameOverdUI;
+        private IReloadUI _reloadUI;
+        private IGameUI _gameUI;
+
+        private CancellationTokenSource _cancellationTokenSource;
+
+        public override async void Enter()
         {
-            _input = ServiceLocator.Local.Get<IInputHandler>();
-            _gameScore = ServiceLocator.Local.Get<IGameScore>();
+            _cancellationTokenSource = new CancellationTokenSource();
 
-            _input.OnTouchUp += OnTouch;
+            _gameScore = ServiceLocator.Local.Get<IGameScore>();
+            _cubeSpawner = ServiceLocator.Local.Get<ICubeSpawner>();
+
+            _gameOverdUI = ServiceLocator.Local.Get<IGameOverdUI>();
+            _reloadUI = ServiceLocator.Local.Get<IReloadUI>();
+            _gameUI = ServiceLocator.Local.Get<IGameUI>();
+
+            await _gameUI.Hide().SuppressCancellationThrow();
+            await _gameOverdUI.Show().SuppressCancellationThrow();
+
+            if (_cancellationTokenSource.IsCancellationRequested)
+                return;
+
+            _gameOverdUI.OnTouch += OnTouch;
         }
 
         public override void Exit()
         {
-            _gameScore.ResetScore();
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
 
-        private void OnTouch(Vector2 pos)
+        private async void OnTouch()
         {
-            _input.OnTouchUp -= OnTouch;
+            _gameOverdUI.OnTouch -= OnTouch;
+
+            await _reloadUI.Show().SuppressCancellationThrow();
+            await _gameOverdUI.Hide().SuppressCancellationThrow();
+
+            if (_cancellationTokenSource.IsCancellationRequested)
+                return;
+
+            _cubeSpawner.DespawnAllCubes();
+            _gameScore.ResetScore();
+
+            await _reloadUI.Hide().SuppressCancellationThrow();
+            await _gameUI.Show().SuppressCancellationThrow();
+
+            if (_cancellationTokenSource.IsCancellationRequested)
+                return;
+
             _stateSwitcher.SwitchState<CubeAimingGameState>();
         }
     }
