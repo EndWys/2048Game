@@ -3,10 +3,8 @@ using UnityEngine;
 
 namespace Assets._Project.Scripts.ServiceLocatorSystem
 {
-    public class ServiceLocatorLoader_Global : MonoBehaviour
+    public class ServiceLocatorLoader_Global
     {
-        [SerializeField] private SoundManager _soundManager;
-
         private ServiceLocator _global;
 
         public void Load()
@@ -18,8 +16,8 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
 
         private void RegisterAllServices()
         {
-            _soundManager.Init();
-            _global.Register(_soundManager);
+            _global.Register(new SoundManager());
+            _global.Register(new VFXManager());
         }
     }
 }

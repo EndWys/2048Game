@@ -1,3 +1,4 @@
+using Assets._Project.Scripts.Effects;
 using Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject;
 using Assets._Project.Scripts.Gameplay.CubeLogic.CubePoolSystem;
 using Assets._Project.Scripts.Gameplay.GameManagment;
@@ -26,12 +27,16 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
 
         private CubeValueSpawnConfig _spawnConfig;
 
+        private VFXManager _vfxManager;
+
         public void Init()
         {
             GameplaySettings settings = ServiceLocator.Local.Get<GameplaySettings>();
             _spawnConfig = settings.CubeValueSpawnConfig;
 
             _cubeRegistry = ServiceLocator.Local.Get<OnFieldCubeRegistry>();
+
+            _vfxManager = ServiceLocator.Global.Get<VFXManager>();
 
             _cubePool.CreatePool();
         }
@@ -49,6 +54,8 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
             cube.CachedGameObject.layer = LayerMask.NameToLayer(MAIN_CUBE_LAYER);
             cube.ValueHolder.SetValue(randomValue);
 
+            _vfxManager.PlayCubeSpawnEffect(_mainCubeSpawnPoint.position);
+
             return cube;
         }
 
@@ -59,6 +66,8 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
             _cubeRegistry.Register(cube);
 
             cube.SetPosition(position);
+
+            _vfxManager.PlayCubeSpawnEffect(position);
 
             return cube;
         }

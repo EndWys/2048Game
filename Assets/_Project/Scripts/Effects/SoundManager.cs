@@ -4,23 +4,24 @@ using UnityEngine;
 
 namespace Assets._Project.Scripts.Effects
 {
-    public class SoundManager : MonoBehaviour, IService
+    public class SoundManager : IService
     {
-        [SerializeField] private AudioSource _audioSource;
-        [Range(0,1)]
-        [SerializeField] private float _volume = 0.5f;
-
         private SoundLibrary _soundLibrary;
+        private AudioSource _audioSource;
 
-        public void Init()
+        private float _volume = 0.3f;
+
+        public SoundManager()
         {
-            DontDestroyOnLoad(gameObject);
-
             _soundLibrary = Resources.Load<SoundLibrary>("SoundLibrary");
             if (_soundLibrary == null)
             {
                 Debug.LogError("SoundLibrary not found in Resources");
             }
+
+            GameObject audioSourceObject = new GameObject();
+
+            _audioSource = audioSourceObject.AddComponent<AudioSource>();
         }
 
         private void PlayWithRandomPitch(AudioClip clip)
