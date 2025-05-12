@@ -16,12 +16,13 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment
         {
             _gameStateMachine = new GameStateMachine();
 
+            _gameStateMachine.Register(new GameEnterGameState());
             _gameStateMachine.Register(new CubeAimingGameState());
             _gameStateMachine.Register(new CubeMovingGameState());
             _gameStateMachine.Register(new GameOverGameState());
         }
 
-        public void StartGame() => _gameStateMachine.SwitchState<CubeAimingGameState>();
+        public void StartGame() => _gameStateMachine.SwitchState<GameEnterGameState>();
 
         public void Tick()
         {
