@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeec5a3cdc4c7434bbb3504b68d4c683, type: 3}
   m_Name: GameplaySettings
   m_EditorClassIdentifier: 
-  <CubeValueSpawnConfig>k__BackingField: {fileID: 11400000, guid: cfcac03893dbc224cbf6963cb6a392f7,
+  _cubeValueSpawnConfig: {fileID: 11400000, guid: cfcac03893dbc224cbf6963cb6a392f7,
     type: 2}
   <LoseCubesCountOnField>k__BackingField: 20

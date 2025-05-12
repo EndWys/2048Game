@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
@@ -18,20 +19,26 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
 
         [SerializeField] private ValueProbability[] _values;
 
-        private float _totalWeight;
+        private float _totalWeight = 0;
 
         private void OnValidate()
         {
-            // Auto-normalize if desired
-            _totalWeight = 0;
+            EnsureTotalWeight();
+        }
+
+        private void EnsureTotalWeight()
+        {
+            if (_totalWeight > 0f) return;
+
+            _totalWeight = 0f;
             foreach (var item in _values)
-            {
                 _totalWeight += item.Probability * PERSENT_MULTIPLIER;
-            }
         }
 
         public int GetRandomValue()
         {
+            EnsureTotalWeight();
+
             float random = UnityEngine.Random.value * _totalWeight;
             float cumulative = 0;
 
