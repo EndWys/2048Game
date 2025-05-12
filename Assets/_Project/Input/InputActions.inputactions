@@ -27,17 +27,6 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "c2af850a-2d75-46c2-b4bd-c8667a5bcd94",
-                    "path": "<Touchscreen>/primaryTouch/tap",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "TouchPress",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "63d4aa13-1fda-4bad-a928-616210e8f055",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
@@ -49,8 +38,19 @@
                 },
                 {
                     "name": "",
-                    "id": "b2d47d94-c83e-4f68-b276-c899dbafdd6f",
-                    "path": "<Touchscreen>/primaryTouch/position",
+                    "id": "d2bece6e-d3af-4665-8c87-5faa8fbe2084",
+                    "path": "<Touchscreen>/touch0/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TouchPress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "700fcc3a-1dfe-4cd2-8d7f-13ab698f6acc",
+                    "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -60,8 +60,8 @@
                 },
                 {
                     "name": "",
-                    "id": "700fcc3a-1dfe-4cd2-8d7f-13ab698f6acc",
-                    "path": "<Mouse>/position",
+                    "id": "243725aa-270c-4830-82ac-bb4cdab62310",
+                    "path": "<Pointer>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

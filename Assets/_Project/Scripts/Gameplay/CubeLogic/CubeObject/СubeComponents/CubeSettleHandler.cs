@@ -1,6 +1,7 @@
 using Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject.ÑubeComponents;
 using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.ServiceLocatorSystem;
+using System;
 using UnityEngine;
 
 public class CubeSettleHandler : MonoBehaviour
@@ -8,13 +9,13 @@ public class CubeSettleHandler : MonoBehaviour
     private Rigidbody _rigidBody;
     private ILaunching _launching;
 
-    private MainCubeEventBus<MainCubeSettledEvent> _settaledEvent;
-
     private bool _isSettled = false;
 
     private float _settleThreshold = 0.1f;
     private float _settleTime = 0.2f;
     private float _timer = 0f;
+
+    public event Action OnCubeSettle;
 
     public void Init(Rigidbody rigidbody, ILaunching launching)
     {
@@ -23,8 +24,6 @@ public class CubeSettleHandler : MonoBehaviour
 
         _rigidBody = rigidbody;
         _launching = launching;
-
-        _settaledEvent = ServiceLocator.Local.Get<MainCubeEventBus<MainCubeSettledEvent>>();
     }
 
     private void Update()
@@ -39,7 +38,7 @@ public class CubeSettleHandler : MonoBehaviour
             if (_timer >= _settleTime)
             {
                 _isSettled = true;
-                _settaledEvent.Raise(new MainCubeSettledEvent());
+                OnCubeSettle?.Invoke();
             }
         }
         else

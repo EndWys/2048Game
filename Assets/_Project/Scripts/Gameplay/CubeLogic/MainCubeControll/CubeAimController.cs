@@ -54,9 +54,9 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
             if (cube == null) return;
 
             float deltaX = (currentPosition.x - _startTouchPosition.x) * _sensitivity;
-            Vector3 newPosition = cube.transform.position;
+            Vector3 newPosition = cube.CachedTrasform.position;
             newPosition.x = Mathf.Clamp(newPosition.x + deltaX, -_moveLimit, _moveLimit);
-            cube.transform.position = newPosition;
+            cube.MoveCubeBody(newPosition);
 
             _startTouchPosition = currentPosition;
         }

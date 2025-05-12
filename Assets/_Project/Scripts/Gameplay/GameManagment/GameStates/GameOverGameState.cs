@@ -1,3 +1,4 @@
+using Assets._Project.Scripts.Effects;
 using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.ServiceLocatorSystem;
 using Assets._Project.Scripts.UI;
@@ -26,6 +27,8 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
             _gameOverdUI = ServiceLocator.Local.Get<IGameOverdUI>();
             _reloadUI = ServiceLocator.Local.Get<IReloadUI>();
             _gameUI = ServiceLocator.Local.Get<IGameUI>();
+
+            ServiceLocator.Global.Get<SoundManager>().PlayGameOver();
 
             await _gameUI.Hide().SuppressCancellationThrow();
             await _gameOverdUI.Show().SuppressCancellationThrow();
