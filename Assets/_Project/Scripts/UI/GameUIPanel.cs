@@ -21,7 +21,9 @@ namespace Assets._Project.Scripts.UI
         [SerializeField] private TextMeshProUGUI _cubeCountLabel;
 
         [Header("Animation Settings")]
-        [SerializeField] private float fadeDuration = 0.3f;
+        [SerializeField] private float _panelFadeDuration = 0.3f;
+        [SerializeField] private float _textPunchScaleDuration = 0.1f;
+        [SerializeField] private float _textPunchSize = 0.1f;
 
         private IGameScore _gameScore;
         private IOnFieldCubeCounter _cubeCounter;
@@ -55,7 +57,7 @@ namespace Assets._Project.Scripts.UI
             CachedGameObject.SetActive(true);
             _canvasGroup.alpha = 0f;
 
-            await _canvasGroup.DOFade(1f, fadeDuration).SetEase(Ease.OutQuad).WithCancellation(_cancellationToken);
+            await _canvasGroup.DOFade(1f, _textPunchScaleDuration).SetEase(Ease.OutQuad).WithCancellation(_cancellationToken);
         }
 
         public override async UniTask Hide()
@@ -69,7 +71,7 @@ namespace Assets._Project.Scripts.UI
             _gameScore.OnScoreChange -= UpdateScore;
             _cubeCounter.OnCountChange -= UpdateCubeCount;
 
-            await _canvasGroup.DOFade(0f, fadeDuration).SetEase(Ease.InQuad).WithCancellation(_cancellationToken);
+            await _canvasGroup.DOFade(0f, _textPunchScaleDuration).SetEase(Ease.InQuad).WithCancellation(_cancellationToken);
 
             CachedGameObject.SetActive(false);
         }
@@ -77,11 +79,26 @@ namespace Assets._Project.Scripts.UI
         private void UpdateScore(int score)
         {
             _scoreLabel.text = $"Score: {score}";
+            AnimatePunch(_scoreLabel.rectTransform);
         }
 
         private void UpdateCubeCount(int count)
         {
             _cubeCountLabel.text = $"Cubes: {count} / {_settings.LoseCubesCountOnField}";
+            AnimatePunch(_cubeCountLabel.rectTransform);
+        }
+
+        private void AnimatePunch(RectTransform target)
+        {
+            // Kill existing animation if any
+            target.DOKill();
+
+            // Reset to normal before animating
+            target.localScale = Vector3.one;
+
+            // Apply punch scale
+            target.DOPunchScale(Vector3.one * _textPunchSize, _textPunchScaleDuration)
+                .SetEase(Ease.OutBack);
         }
     }
 }

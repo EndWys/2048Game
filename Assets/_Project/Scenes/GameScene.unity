@@ -334,7 +334,9 @@ MonoBehaviour:
   _canvasGroup: {fileID: 35596929}
   _scoreLabel: {fileID: 2029153053}
   _cubeCountLabel: {fileID: 1391438628}
-  fadeDuration: 0.3
+  _panelFadeDuration: 0.2
+  _textPunchScaleDuration: 0.15
+  _textPunchSize: 0.12
 --- !u!1 &69197352
 GameObject:
   m_ObjectHideFlags: 0
