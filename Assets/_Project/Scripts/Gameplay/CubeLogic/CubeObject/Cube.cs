@@ -57,6 +57,8 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject
         public void SetPosition(Vector3 position) => CachedTrasform.position = position;
         public void SetRotation(Quaternion rotation) => CachedTrasform.rotation = rotation;
 
+        public void MoveCubeBody(Vector3 position) => _rigidBody.MovePosition(position);
+
         public void Launch() => _cubeMover.Launch();
         public void MergeLaunch(Cube parent) => _cubeMover.MergeLaunch(parent._rigidBody.velocity);
 
