@@ -17,6 +17,9 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject
     }
     public class Cube : PoolObject, ICubeComparer
     {
+        public const string MAIN_CUBE_LAYER = "MainCube";
+        public const string CUBE_LAYER = "Cube";
+
         [SerializeField] private Rigidbody _rigidBody;
 
         [SerializeField] private CubeMover _cubeMover;
@@ -32,10 +35,13 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject
 
         public IValueHolder ValueHolder => _cubeValue;
 
+        private MainCubeEventBus<MainCubeSettledEvent> _settaledEvent;
+
         public void Init()
         {
             _activeCubeProvider = ServiceLocator.Local.Get<IActiveCubeProvider>();
             _mergeRule = ServiceLocator.Local.Get<IMergeRule>();
+            _settaledEvent = ServiceLocator.Local.Get<MainCubeEventBus<MainCubeSettledEvent>>();
         }
 
         public void Activate()
@@ -44,6 +50,7 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject
             _rigidBody.isKinematic = false;
 
             _cubeCollisionHandler.OnCubeCollide += OnCubeCollide;
+            _cubeSettleHandler.OnCubeSettle += OnCubeSettele;
         }
 
         public void Deactivate() => CachedGameObject.SetActive(false);
@@ -54,11 +61,16 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject
         public void MergeLaunch(Cube parent) => _cubeMover.MergeLaunch(parent._rigidBody.velocity);
 
 
-        public void MakeMerged() =>_cubeMergeHandler.MakeMerged();
+        public void MakeMerged()
+        {
+            CachedGameObject.layer = LayerMask.NameToLayer(CUBE_LAYER);
+            _cubeMergeHandler.MakeMerged();
+        }
+
         public bool IsMerged() => _cubeMergeHandler.IsMerged();
         public bool CanMergeWith(Cube cube) => _cubeMergeHandler.CanMergeWith(cube) && _cubeValue.HasSameValue(cube._cubeValue);
 
-        public bool IsMainCube() => _activeCubeProvider.ActiveCube.Equals(this);
+        public bool IsMainCube() => Equals(_activeCubeProvider.ActiveCube);
 
         public override void OnGetFromPool()
         {
@@ -82,6 +94,14 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject
 
             _cubeMover.Init(_rigidBody);
             _cubeSettleHandler.Init(_rigidBody, _cubeMover);
+        }
+
+        private void OnCubeSettele()
+        {
+            if (IsMainCube())
+            {
+                _settaledEvent.Raise(new());
+            }
         }
 
         private void OnCubeCollide(Cube otherCube)

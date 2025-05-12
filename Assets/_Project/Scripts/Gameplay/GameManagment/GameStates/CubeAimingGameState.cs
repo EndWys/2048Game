@@ -12,22 +12,11 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
         private IActiveCubeProvider _cubeProvider;
         private ICubeAimController _aimController;
 
-        private IGameOverChecker _gameOverChecker;
-
         private SoundManager _soundManager;
 
         public override void Enter()
         {
             _soundManager = ServiceLocator.Global.Get<SoundManager>();
-
-            _gameOverChecker = ServiceLocator.Local.Get<IGameOverChecker>();
-
-            if (_gameOverChecker.IsGameOver())
-            {
-                _soundManager.PlayGameOver();
-                _stateSwitcher.SwitchState<GameOverGameState>();
-                return;
-            }
 
             _cubeSpawner = ServiceLocator.Local.Get<ICubeSpawner>();
             _cubeProvider = ServiceLocator.Local.Get<IActiveCubeProvider>();

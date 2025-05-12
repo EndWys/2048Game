@@ -1,12 +1,12 @@
 using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.ServiceLocatorSystem;
-using UnityEngine;
 
 namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
 {
     public class CubeMovingGameState : GameState
     {
         private IActiveCubeProvider _cubeProvider;
+        private IGameOverChecker _gameOverChecker;
 
         private MainCubeEventBus<MainCubeSettledEvent> _settaledEvent;
         private MainCubeEventBus<MainCubeMergedEvent> _mergeEvent;
@@ -14,6 +14,7 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
         public override void Enter()
         {
             _cubeProvider = ServiceLocator.Local.Get<IActiveCubeProvider>();
+            _gameOverChecker = ServiceLocator.Local.Get<IGameOverChecker>();
 
             _settaledEvent = ServiceLocator.Local.Get<MainCubeEventBus<MainCubeSettledEvent>>();
             _mergeEvent = ServiceLocator.Local.Get<MainCubeEventBus<MainCubeMergedEvent>>();
@@ -31,13 +32,18 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
         }
 
 
-        private void OnSettaledEvent(MainCubeSettledEvent evnt)
-        {
-            _stateSwitcher.SwitchState<CubeAimingGameState>();
-        }
+        private void OnSettaledEvent(MainCubeSettledEvent evnt) => OnAnyEvent();
 
-        private void OnMergedEvent(MainCubeMergedEvent evnt)
+        private void OnMergedEvent(MainCubeMergedEvent evnt) => OnAnyEvent();
+
+        private void OnAnyEvent()
         {
+            if (_gameOverChecker.IsGameOver())
+            {
+                _stateSwitcher.SwitchState<GameOverGameState>();
+                return;
+            }
+
             _stateSwitcher.SwitchState<CubeAimingGameState>();
         }
     }

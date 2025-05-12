@@ -18,8 +18,6 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
 
     public class CubeSpawner : MonoBehaviour, ICubeSpawner
     {
-        private const string MAIN_CUBE_LAYER = "MainCube";
-
         [SerializeField] private Transform _mainCubeSpawnPoint;
         [SerializeField] private CubePool _cubePool;
 
@@ -48,7 +46,7 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll
             Cube cube = _cubePool.GetObject();
             cube.SetPosition(_mainCubeSpawnPoint.position);
             cube.SetRotation(Quaternion.identity);
-            cube.CachedGameObject.layer = LayerMask.NameToLayer(MAIN_CUBE_LAYER);
+            cube.CachedGameObject.layer = LayerMask.NameToLayer(Cube.MAIN_CUBE_LAYER);
             cube.ValueHolder.SetValue(randomValue);
             cube.Activate();
 

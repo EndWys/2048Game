@@ -1,4 +1,5 @@
 using Assets._Project.Scripts.Extensions;
+using Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject;
 using UnityEngine;
 
 public class OneSideWall : MonoBehaviour
@@ -8,7 +9,7 @@ public class OneSideWall : MonoBehaviour
     {
         if (_mainCubeLayer.Contains(other.gameObject.layer))
         {
-            other.gameObject.layer = LayerMask.NameToLayer("Cube");
+            other.gameObject.layer = LayerMask.NameToLayer(Cube.CUBE_LAYER);
         }
     }
 }

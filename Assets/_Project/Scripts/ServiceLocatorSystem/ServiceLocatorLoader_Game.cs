@@ -37,7 +37,6 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
 
             _local.Register<IGameScore>(new GameScore());
             _local.Register(new OnFieldCubeRegistry());
-            _local.Register<IGameOverChecker>(new GameOverChecker());
 
             _local.Register<IActiveCubeProvider>(new ActiveCubeProvider());
             _cubeSpawner.Init();
@@ -46,6 +45,7 @@ namespace Assets._Project.Scripts.ServiceLocatorSystem
 
             _local.Register<IMergeRule>(new MergeRule());
 
+            _local.Register<IGameOverChecker>(new GameOverChecker());
 
             _reloadUIPanel.Init();
             _local.Register<IReloadUI>(_reloadUIPanel);
