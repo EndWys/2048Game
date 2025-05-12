@@ -28,7 +28,7 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
             _reloadUI = ServiceLocator.Local.Get<IReloadUI>();
             _gameUI = ServiceLocator.Local.Get<IGameUI>();
 
-            //_soundManager.PlayGameOver();
+            ServiceLocator.Global.Get<SoundManager>().PlayGameOver();
 
             await _gameUI.Hide().SuppressCancellationThrow();
             await _gameOverdUI.Show().SuppressCancellationThrow();

@@ -31,7 +31,10 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
             _cubeProvider = ServiceLocator.Local.Get<IActiveCubeProvider>();
             _aimController = ServiceLocator.Local.Get<ICubeAimController>();
 
-            await UniTask.Delay(TimeSpan.FromSeconds(_cubeSpawnDelay), cancellationToken: _cancellationTokenSource.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(_cubeSpawnDelay), cancellationToken: _cancellationTokenSource.Token).SuppressCancellationThrow();
+
+            if (_cancellationTokenSource.IsCancellationRequested)
+                return;
 
             Cube cube = _cubeSpawner.SpawnMainCube();
 
