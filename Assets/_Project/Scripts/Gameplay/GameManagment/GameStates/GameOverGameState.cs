@@ -18,6 +18,8 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
 
         public override async void Enter()
         {
+            _cancellationTokenSource = new CancellationTokenSource();
+
             _gameScore = ServiceLocator.Local.Get<IGameScore>();
             _cubeSpawner = ServiceLocator.Local.Get<ICubeSpawner>();
 
