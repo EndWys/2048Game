@@ -1,3 +1,4 @@
+using Assets._Project.Scripts.Effects;
 using Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject;
 using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.ServiceLocatorSystem;
@@ -57,6 +58,8 @@ namespace Assets._Project.Scripts.Gameplay.CubeLogic
                 {
                     _mergeEvent.Raise(new());
                 }
+
+                ServiceLocator.Global.Get<SoundManager>().PlayCubeMerge();
             }
         }
     }

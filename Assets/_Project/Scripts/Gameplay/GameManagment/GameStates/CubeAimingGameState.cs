@@ -1,3 +1,4 @@
+using Assets._Project.Scripts.Effects;
 using Assets._Project.Scripts.Gameplay.CubeLogic.CubeObject;
 using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.ServiceLocatorSystem;
@@ -13,12 +14,17 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
 
         private IGameOverChecker _gameOverChecker;
 
+        private SoundManager _soundManager;
+
         public override void Enter()
         {
+            _soundManager = ServiceLocator.Global.Get<SoundManager>();
+
             _gameOverChecker = ServiceLocator.Local.Get<IGameOverChecker>();
 
             if (_gameOverChecker.IsGameOver())
-            {                
+            {
+                _soundManager.PlayGameOver();
                 _stateSwitcher.SwitchState<GameOverGameState>();
                 return;
             }
@@ -32,6 +38,8 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
             _cubeProvider.SetCube(cube);
 
             _aimController.Enable(OnCubeLaunch);
+
+            _soundManager.PlayCubeSpawn();
         }
 
         public override void Exit()
@@ -41,6 +49,7 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
 
         private void OnCubeLaunch()
         {
+            _soundManager.PlayCubeLounch();
             _cubeProvider.ActiveCube.Launch();
             _stateSwitcher.SwitchState<CubeMovingGameState>();
         }
