@@ -7,8 +7,9 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment
     [CreateAssetMenu(fileName = "GameplaySettings", menuName = "Game/Gameplay Settings")]
     public class GameplaySettings : ScriptableObject, IService
     {
-        [field: Header("Cubes")]
-        [field: SerializeField] public CubeValueSpawnConfig CubeValueSpawnConfig { get; private set; }
+        [Header("Cubes")]
+        [SerializeField] private CubeValueSpawnConfig _cubeValueSpawnConfig;
+        public CubeValueSpawnConfig CubeValueSpawnConfig => _cubeValueSpawnConfig;
 
         [field: Header("Game Over")]
         [field: Min(1)]
