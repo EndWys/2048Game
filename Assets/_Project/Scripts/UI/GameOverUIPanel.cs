@@ -42,6 +42,8 @@ namespace Assets._Project.Scripts.UI
             _gameScore = ServiceLocator.Local.Get<IGameScore>();
 
             _panelButton.onClick.AddListener(OnPanelClick);
+
+            _tokenSource = new CancellationTokenSource();
         }
 
         public override async UniTask Show()

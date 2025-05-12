@@ -27,11 +27,11 @@ namespace Assets._Project.Scripts.UI
         private IOnFieldCubeCounter _cubeCounter;
         private GameplaySettings _settings;
 
-        private CancellationTokenSource _tokenSource;
+        private CancellationToken _cancellationToken;
 
         public void Init()
         {
-            _tokenSource = new CancellationTokenSource();
+            _cancellationToken = CachedGameObject.GetCancellationTokenOnDestroy();
 
             _gameScore = ServiceLocator.Local.Get<IGameScore>();
             _cubeCounter = ServiceLocator.Local.Get<OnFieldCubeRegistry>();
@@ -40,7 +40,7 @@ namespace Assets._Project.Scripts.UI
 
         public override async UniTask Show()
         {
-            if (_tokenSource.IsCancellationRequested)
+            if (_cancellationToken.IsCancellationRequested)
                 return;
 
             if (CachedGameObject.activeSelf)
@@ -55,12 +55,12 @@ namespace Assets._Project.Scripts.UI
             CachedGameObject.SetActive(true);
             _canvasGroup.alpha = 0f;
 
-            await _canvasGroup.DOFade(1f, fadeDuration).SetEase(Ease.OutQuad).WithCancellation(_tokenSource.Token);
+            await _canvasGroup.DOFade(1f, fadeDuration).SetEase(Ease.OutQuad).WithCancellation(_cancellationToken);
         }
 
         public override async UniTask Hide()
         {
-            if (_tokenSource.IsCancellationRequested)
+            if (_cancellationToken.IsCancellationRequested)
                 return;
 
             if (!CachedGameObject.activeSelf)
@@ -69,7 +69,7 @@ namespace Assets._Project.Scripts.UI
             _gameScore.OnScoreChange -= UpdateScore;
             _cubeCounter.OnCountChange -= UpdateCubeCount;
 
-            await _canvasGroup.DOFade(0f, fadeDuration).SetEase(Ease.InQuad).WithCancellation(_tokenSource.Token);
+            await _canvasGroup.DOFade(0f, fadeDuration).SetEase(Ease.InQuad).WithCancellation(_cancellationToken);
 
             CachedGameObject.SetActive(false);
         }
@@ -82,12 +82,6 @@ namespace Assets._Project.Scripts.UI
         private void UpdateCubeCount(int count)
         {
             _cubeCountLabel.text = $"Cubes: {count} / {_settings.LoseCubesCountOnField}";
-        }
-
-        private void OnDestroy()
-        {
-            _tokenSource?.Cancel();
-            _tokenSource?.Dispose();
         }
     }
 }

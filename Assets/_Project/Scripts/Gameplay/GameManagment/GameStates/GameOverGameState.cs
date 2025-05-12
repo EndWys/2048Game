@@ -1,6 +1,7 @@
 using Assets._Project.Scripts.Gameplay.CubeLogic.MainCubeControll;
 using Assets._Project.Scripts.ServiceLocatorSystem;
 using Assets._Project.Scripts.UI;
+using System.Threading;
 
 namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
 {
@@ -13,6 +14,8 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
         private IReloadUI _reloadUI;
         private IGameUI _gameUI;
 
+        private CancellationTokenSource _cancellationTokenSource;
+
         public override async void Enter()
         {
             _gameScore = ServiceLocator.Local.Get<IGameScore>();
@@ -22,22 +25,39 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
             _reloadUI = ServiceLocator.Local.Get<IReloadUI>();
             _gameUI = ServiceLocator.Local.Get<IGameUI>();
 
-            await _gameUI.Hide();
-            await _gameOverdUI.Show();
+            await _gameUI.Hide().SuppressCancellationThrow();
+            await _gameOverdUI.Show().SuppressCancellationThrow();
+
+            if (_cancellationTokenSource.IsCancellationRequested)
+                return;
 
             _gameOverdUI.OnTouch += OnTouch;
+        }
+
+        public override void Exit()
+        {
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
 
         private async void OnTouch()
         {
             _gameOverdUI.OnTouch -= OnTouch;
 
-            await _reloadUI.Show();
-            await _gameOverdUI.Hide();
+            await _reloadUI.Show().SuppressCancellationThrow();
+            await _gameOverdUI.Hide().SuppressCancellationThrow();
+
+            if (_cancellationTokenSource.IsCancellationRequested)
+                return;
+
             _cubeSpawner.DespawnAllCubes();
             _gameScore.ResetScore();
-            await _reloadUI.Hide();
-            await _gameUI.Show();
+
+            await _reloadUI.Hide().SuppressCancellationThrow();
+            await _gameUI.Show().SuppressCancellationThrow();
+
+            if (_cancellationTokenSource.IsCancellationRequested)
+                return;
 
             _stateSwitcher.SwitchState<CubeAimingGameState>();
         }

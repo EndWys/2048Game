@@ -15,13 +15,10 @@ namespace Assets._Project.Scripts.Gameplay.GameManagment.GameStates
 
         public override void Enter()
         {
-            Debug.Log("Aim!!!");
-
             _gameOverChecker = ServiceLocator.Local.Get<IGameOverChecker>();
 
             if (_gameOverChecker.IsGameOver())
-            {
-                Debug.Log("Gameover!!!");
+            {                
                 _stateSwitcher.SwitchState<GameOverGameState>();
                 return;
             }
