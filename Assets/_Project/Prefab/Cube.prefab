@@ -1107,7 +1107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11f095701ed982f45ba87751839fa22c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _launchForce: 25
+  _launchForce: 20
   _mergeForce: 3
 --- !u!114 &-327222287643337290
 MonoBehaviour:
@@ -1121,7 +1121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 523964298a9748a4ca6ea8177e2ce8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mergeImpulseThreshold: 1.5
+  _mergeImpulseThreshold: 2
 --- !u!114 &-3038305274526355335
 MonoBehaviour:
   m_ObjectHideFlags: 0
