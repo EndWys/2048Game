@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7084103105449402743}
   - component: {fileID: 1547605612976130758}
   - component: {fileID: 5489618948186377076}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CubeSpawnEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
